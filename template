@@ -1,0 +1,19 @@
+http {
+
+server {
+
+# Redirect visitors to specific servers when needed
+# Use IP addresses assigned by Docker
+{{range .items}}
+location /{{ .metadata.name}} {
+proxy_pass http://{{ .metadata.name}}:8080;
+}
+{{end}}
+
+
+}
+
+}
+
+events {
+}
