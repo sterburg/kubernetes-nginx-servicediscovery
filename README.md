@@ -13,14 +13,13 @@ oc admin add-scc-to-user anyuid -z default
 oc patch dc/nginx --patch='{"spec": {"template": {"spec": {"securityContext": { "runAsUser": 0 }}}}}'
 ```
 
-Allow container to query services:
+Allow container to query services and run rsh:
 ```
 oc policy add-role-to-user edit -z default
 ```
 
 Add etc mount shared between both containers
 ```
-oc volume dc/nginx --add --name=cache -m /var/cache/nginx
 oc volume dc/nginx --add --name=etc   -m /etc/nginx/conf.d
 ```
 
