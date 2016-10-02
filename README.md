@@ -20,7 +20,7 @@ oc policy add-role-to-user edit -z default
 
 Add etc mount shared between both containers
 ```
-oc volume dc/nginx --add --name=etc   -m /etc/nginx/conf.d
+oc volume dc/nginx --add --name=etc -m /etc/nginx/conf.d
 ```
 
 Build sidecar container and add it to the existing nginx deployment:
@@ -59,8 +59,21 @@ oc patch dc nginx --patch='
 }'
 ```
 
+If you don't want a static template from your Git repo, but want a dynamic template per environment/namespace/project:
+```
+oc create configmap templates --from-file=proxy.tpl
+oc volume dc/nginx --add -m /templates --source='{"configMap": { "name": "templates"}}'
+```
+
+# Usage
+* Use ENV FILTER as a "label query" (selector) to only include those services with that label.
+* Use ENV TEMPLATE to dynamically choose the template from your list of templates
+
 # Remarks
 * Shared PID namespace is not supported by Kubernetes 1.3 yet.
   Either use "hostPID: true" (you need scc 'privileged') in your deploymentconfig
-  Or use "oc rsh" (you need role 'edit') to send the kill signal.
+  or use "oc rsh" (you need role 'edit') to send the kill signal.
+* "FROM alphine" somehow doesn't mount /run/secrets/serviceaccount.
+  Now using "debian:jessie" which is the same base layers as the nginx image used anyway.
+* "oc" (openshift client) binary will behave like "kubectl" when it is renamed as "kubectl"
 

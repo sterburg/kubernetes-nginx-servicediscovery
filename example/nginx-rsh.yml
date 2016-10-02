@@ -45,9 +45,11 @@ spec:
         terminationMessagePath: /dev/termination-log
         volumeMounts:
         - mountPath: /var/cache/nginx
-          name: volume-tijez
+          name: volume-cache
         - mountPath: /etc/nginx/conf.d
-          name: etc
+          name: volume-etc
+        - mountPath: /templates
+          name: volume-templates
       - image: 172.30.67.71:5000/nginx/nginx-dynsvc:latest
         imagePullPolicy: Always
         name: nginx-dynsvc
@@ -55,7 +57,9 @@ spec:
         terminationMessagePath: /dev/termination-log
         volumeMounts:
         - mountPath: /etc/nginx/conf.d
-          name: etc
+          name: volume-etc
+        - mountPath: /templates
+          name: volume-templates
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       securityContext:
@@ -63,9 +67,12 @@ spec:
       terminationGracePeriodSeconds: 30
       volumes:
       - emptyDir: {}
-        name: volume-tijez
+        name: volume-cache
       - emptyDir: {}
-        name: etc
+        name: volume-etc
+      - configMap:
+          name: templates
+        name: volume-templates
   test: false
   triggers:
   - imageChangeParams:
