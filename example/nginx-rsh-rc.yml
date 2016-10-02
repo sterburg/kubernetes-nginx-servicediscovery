@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  annotations:
+    openshift.io/deployer-pod.name: nginx-26-deploy
+    openshift.io/deployment-config.latest-version: "26"
+    openshift.io/deployment-config.name: nginx
+    openshift.io/deployment.phase: Complete
+    openshift.io/deployment.replicas: "0"
+    openshift.io/encoded-deployment-config: |
+      {"kind":"DeploymentConfig","apiVersion":"v1","metadata":{"name":"nginx","namespace":"nginx","selfLink":"/oapi/v1/namespaces/nginx/deploymentconfigs/nginx","uid":"6c8ab75c-885a-11e6-8ed2-a434d92b0539","resourceVersion":"231484","creationTimestamp":"2016-10-02T04:41:03Z","labels":{"app":"nginx"},"annotations":{"openshift.io/deployment.cancelled":"14","openshift.io/generated-by":"OpenShiftNewApp"}},"spec":{"strategy":{"type":"Rolling","rollingParams":{"updatePeriodSeconds":1,"intervalSeconds":1,"timeoutSeconds":600,"maxUnavailable":"25%","maxSurge":"25%"},"resources":{}},"triggers":[{"type":"ImageChange","imageChangeParams":{"containerNames":["nginx-dynsvc"],"from":{"kind":"ImageStreamTag","name":"nginx-dynsvc:latest"}}}],"replicas":1,"test":false,"selector":{"app":"nginx","deploymentconfig":"nginx"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"nginx","deploymentconfig":"nginx"},"annotations":{"openshift.io/container.nginx.image.entrypoint":"[\"nginx\",\"-g\",\"daemon off;\"]","openshift.io/generated-by":"OpenShiftNewApp"}},"spec":{"volumes":[{"name":"volume-tijez","emptyDir":{}},{"name":"etc","emptyDir":{}},{"name":"volume-26gdr","configMap":{"name":"templates"}}],"containers":[{"name":"nginx","image":"172.30.67.71:5000/nginx/nginx:latest","ports":[{"containerPort":80,"protocol":"TCP"},{"containerPort":443,"protocol":"TCP"}],"resources":{},"volumeMounts":[{"name":"volume-tijez","mountPath":"/var/cache/nginx"},{"name":"etc","mountPath":"/etc/nginx/conf.d"},{"name":"volume-26gdr","mountPath":"/templates"}],"terminationMessagePath":"/dev/termination-log","imagePullPolicy":"Always"},{"name":"nginx-dynsvc","image":"172.30.67.71:5000/nginx/nginx-dynsvc:latest","resources":{},"volumeMounts":[{"name":"etc","mountPath":"/etc/nginx/conf.d"},{"name":"volume-26gdr","mountPath":"/templates"}],"terminationMessagePath":"/dev/termination-log","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{"runAsUser":0}}}},"status":{"latestVersion":26,"details":{"causes":[{"type":"ImageChange","imageTrigger":{"from":{"kind":"ImageStreamTag","name":"nginx:latest"}}}]}}}
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: nginx
+    openshift.io/deployment-config.name: nginx
+  name: nginx-26
+spec:
+  replicas: 0
+  selector:
+    app: nginx
+    deployment: nginx-26
+    deploymentconfig: nginx
+  template:
+    metadata:
+      annotations:
+        openshift.io/container.nginx.image.entrypoint: '["nginx","-g","daemon off;"]'
+        openshift.io/deployment-config.latest-version: "26"
+        openshift.io/deployment-config.name: nginx
+        openshift.io/deployment.name: nginx-26
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        app: nginx
+        deployment: nginx-26
+        deploymentconfig: nginx
+    spec:
+      containers:
+      - image: 172.30.67.71:5000/nginx/nginx:latest
+        imagePullPolicy: Always
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        - containerPort: 443
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+        - mountPath: /var/cache/nginx
+          name: volume-tijez
+        - mountPath: /etc/nginx/conf.d
+          name: etc
+        - mountPath: /templates
+          name: volume-26gdr
+      - image: 172.30.67.71:5000/nginx/nginx-dynsvc:latest
+        imagePullPolicy: Always
+        name: nginx-dynsvc
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: etc
+        - mountPath: /templates
+          name: volume-26gdr
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 0
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: volume-tijez
+      - emptyDir: {}
+        name: etc
+      - configMap:
+          name: templates
+        name: volume-26gdr
+status:
+  replicas: 0

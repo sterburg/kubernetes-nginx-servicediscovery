@@ -1,6 +1,16 @@
 # kubernetes-nginx-servicediscovery
 sidecar: Create nginx config from go-template based on watching kubernetes services using kubectl
 
+# Concept
+This example explains the following concepts:
+* side-car container (one container helping the other. Living in 1 POD)
+* service discovery  (listen for changes & adapt yourself)
+* ConfigMap (external config)
+* Running Docker Hub images on OpenShift (AnyUID policy role)
+* Accessing Kube API from withing Container (use ServiceAccount from /run/secrets)
+* OpenShift Kubernetes compatibility (Transform OpenShift client "oc" into Kubernetes client "kubectl")
+
+
 # Setup
 ```
 oc new-project nginx
@@ -64,6 +74,7 @@ If you don't want a static template from your Git repo, but want a dynamic templ
 oc create configmap templates --from-file=proxy.tpl
 oc volume dc/nginx --add -m /templates --source='{"configMap": { "name": "templates"}}'
 ```
+
 
 # Usage
 * Use ENV FILTER as a "label query" (selector) to only include those services with that label.
