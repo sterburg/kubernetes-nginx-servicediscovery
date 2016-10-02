@@ -84,7 +84,7 @@ oc volume dc/nginx --add -m /templates --source='{"configMap": { "name": "templa
 * Shared PID namespace is not supported by Kubernetes 1.3 yet.
   Either use "hostPID: true" (you need scc 'privileged') in your deploymentconfig
   or use "oc rsh" (you need role 'edit') to send the kill signal.
-* "FROM alphine" somehow doesn't mount /run/secrets/serviceaccount.
+* "FROM alpine" somehow doesn't mount /run/secrets/serviceaccount.
   Now using "debian:jessie" which is the same base layers as the nginx image used anyway.
 * "oc" (openshift client) binary will behave like "kubectl" when it is renamed as "kubectl"
 
