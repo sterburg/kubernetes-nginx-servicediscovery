@@ -29,6 +29,7 @@ do
   oc rsh "${HOSTNAME}" kill -HUP 1 || echo 'unable to reload nginx'
 
   # shared PID namespace not available in Kubernetes 1.3 yet...
+  # for now, use hostPID:true in deploymentconfig if you want to use this
   #kill -HUP $(ps -ef | grep 'nginx.*master' | awk '{print $2}' || echo 'nginx process not found') || echo 'unable to reload nginx'
 done
 
